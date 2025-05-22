@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload de Foto</title>
+</head>
+<body>
+    <h1>Upload da Foto</h1>
+
+    <form action="/enviar_foto" method="post" enctype="multipart/form-data">
+        <label for="foto">Selecione a foto (3x4, JPG/PNG):</label><br>
+        <input type="file" id="foto" name="foto" accept=".jpg, .jpeg, .png" required><br><br>
+        <small>A foto deve ter o tamanho de 3x4 (300x400 pixels) e estar no formato JPG ou PNG.</small><br><br>
+        <button type="submit">Enviar Foto</button>
+    </form>
+</body>
+</html>
+
