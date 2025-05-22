@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Tela Inicial</title>
+</head>
+<body>
+<h1>Seja Bem-Vindo!</h1>
+<!--IMAGEM DA ALUNA-->
+<section>
+        <img src="" alt="Aluna do IFAM segurando a carteirinha" width="300">
+    </section>
+<!--QUEM SOMOS?-->
+<section>
+<h2>Quem somos?</h2>
+
+<p>Somos um projeto do IFAM criado para facilitar o acesso à carteirinha estudantil digital.</p>
+<p>Com uma plataforma online, segura e prática, oferecemos aos alunos a possibilidade de consultar, cadastrar e baixar sua identificação em poucos cliques.</p>
+</section>
+<!--Condicional-->
+<section>
+    <form>
+    <label for="matricula">Matrícula:</label>
+    <input type="text" id="matricula" name="matricula" placeholder="Digite a sua matrícula" required><br><br>
+     <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Digite o seu email institucional" required><br><br>
+    <button type="submit">Verificar</button>
+    </form>
+</section>
+<section>
+        <h3>Resultado</h3>
+
+        <!-- Exemplo se encontrado -->
+        <div class="resposta-sucesso" style="color: green;">
+            ✅ Sua carteirinha foi encontrada!<br>
+            <a href="#" download>📥 Baixar Carteirinha</a>
+        </div>
+
+        <!-- Exemplo se não encontrado -->
+        <div class="resposta-erro" style="color: red; margin-top: 20px;">
+            ❌ Nenhuma carteirinha encontrada.<br>
+            <button>Cadastrar Carteirinha</button>
+        </div>
+    </section>
+</body>
+</html>
