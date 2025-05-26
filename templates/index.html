@@ -20,7 +20,7 @@
 </section>
 <!--Condicional-->
 <section>
-    <form>
+    <form  method="POST" action="/">
     <label for="matricula">Matrícula:</label>
     <input type="text" id="matricula" name="matricula" placeholder="Digite a sua matrícula" required><br><br>
      <label for="email">Email:</label>
@@ -29,19 +29,19 @@
     </form>
 </section>
 <section>
-        <h3>Resultado</h3>
+    <h3>Resultado</h3>
 
-        <!-- Exemplo se encontrado -->
+    {% if resultado == "sucesso" %}
         <div class="resposta-sucesso" style="color: green;">
             ✅ Sua carteirinha foi encontrada!<br>
             <a href="#" download>📥 Baixar Carteirinha</a>
         </div>
-
-        <!-- Exemplo se não encontrado -->
+    {% elif resultado == "erro" %}
         <div class="resposta-erro" style="color: red; margin-top: 20px;">
             ❌ Nenhuma carteirinha encontrada.<br>
             <button>Cadastrar Carteirinha</button>
         </div>
-    </section>
-</body>
-</html>
+    {% else %}
+        <!-- Não mostrar nada antes de enviar o formulário -->
+    {% endif %}
+</section>
