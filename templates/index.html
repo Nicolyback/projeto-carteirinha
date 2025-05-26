@@ -31,17 +31,10 @@
 <section>
     <h3>Resultado</h3>
 
-    {% if resultado == "sucesso" %}
-        <div class="resposta-sucesso" style="color: green;">
-            ✅ Sua carteirinha foi encontrada!<br>
-            <a href="#" download>📥 Baixar Carteirinha</a>
+    {% if resultado %}
+        <div style="margin-top: 20px;">
+            {{ resultado | safe }}
         </div>
-    {% elif resultado == "erro" %}
-        <div class="resposta-erro" style="color: red; margin-top: 20px;">
-            ❌ Nenhuma carteirinha encontrada.<br>
-            <button>Cadastrar Carteirinha</button>
-        </div>
-    {% else %}
-        <!-- Não mostrar nada antes de enviar o formulário -->
     {% endif %}
 </section>
+</body>
