@@ -1,16 +1,20 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker 
-from models import Aluno, Carteirinha
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-from models import Base
+# Cria a base para os modelos
+Base = declarative_base()
 
-engine = create_engine("sqlite:///studentidbank.db")
+# Cria o engine de conexão com o banco SQLite
+engine = create_engine("sqlite:///studentidbank.db", echo=True)
 
-
-# Cria uma sessão
+# Cria a sessão
 Session = sessionmaker(bind=engine)
 session = Session()
 
+# Importa os modelos (Aluno e Carteirinha) para que as tabelas sejam registradas
+from models import Aluno, Carteirinha
 
-# Cria as tabelas
-Base.metadata.create_all(bind=engine)
+def init_db():
+    print(">> Criando tabelas...")
+    Base.metadata.create_all(bind=engine)
+

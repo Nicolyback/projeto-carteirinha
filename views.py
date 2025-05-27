@@ -1,9 +1,11 @@
 from flask import render_template, request
 from main import app
-from app import verificar_carteirinha
+
+
 
 @app.route("/", methods=["GET", "POST"])
 def homeindex():
+    from app_routes import verificar_carteirinha
     if request.method == "POST":
         matricula = int(request.form["matricula"])
         email = request.form["email"]
