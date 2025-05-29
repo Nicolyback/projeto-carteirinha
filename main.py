@@ -1,6 +1,7 @@
 from flask import Flask
 
 app= Flask(__name__)
+app.secret_key = 'uma_chave_super_secreta_e_segura_aqui_123!' 
 
 
 # Importa e inicializa o banco de dados (cria as tabelas)

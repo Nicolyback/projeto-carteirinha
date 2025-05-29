@@ -7,21 +7,40 @@
 <body>
 <h1>Formulário</h1>
 <form action="/enviar" method="post">
-<label for="name">Nome:</label><br>
-<input id="name" type="text" name="nome" placeholder="Digite o seu nome completo..." required autofocus><br><br>
-<label for="matricula">Matricula:</label><br>
-<input type="number" id="matricula" name="matricula" placeholder="Digite a sua matricula..." required><br><br>
-<label for="cpf">CPF:</label><br>
-<input type="text" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX" required><br><br>
-<label for="curso">Curso:</label><br>
-<input type="text" id="curso" name="curso" placeholder="Digite o seu curso..." required><br><br>
-<label for="resp"> Nome do responsável:</label><br>
-<input type="text" id="resp" name="responsavel" placeholder="Digite o seu curso..." required><br><br>
-<label for="val">Validade carteirinha:</label><br>
-<input type="text" id="val" name="validade" placeholder="MM/AAAAA" required><br><br>
+    <label for="name">Nome:</label><br>
+    <input id="name" type="text" name="nome" placeholder="Digite o seu nome completo..." required autofocus><br><br>
 
- <button type="submit">Próximo</button>
+    <label for="matricula">Matricula:</label><br>
+    <input type="number" id="matricula" name="matricula" placeholder="Digite a sua matricula..." required><br><br>
+
+    <label for="email">Email institucional:</label><br>
+    <input type="email" id="email" name="email" placeholder="Digite seu email institucional..." required><br><br>
+
+    <label for="cpf">CPF:</label><br>
+    <input type="text" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX" required><br><br>
+
+    <label for="curso">Curso:</label><br>
+    <input type="text" id="curso" name="curso" placeholder="Digite o seu curso..." required><br><br>
+
+    <label for="resp">Nome do responsável:</label><br>
+    <input type="text" id="resp" name="responsavel" placeholder="Digite o nome do responsável..." required><br><br>
+
+    <label for="val">Validade carteirinha:</label><br>
+    <input type="month" id="val" name="validade" required><br><br>
+
+    <button type="submit">Próximo</button>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul style="list-style: none;">
+          {% for category, message in messages %}
+            <li class="{{ 'mensagem-erro' if category == 'erro' else 'mensagem-sucesso' }}">
+              {{ message }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 </form>
-
 </body>
 </html>

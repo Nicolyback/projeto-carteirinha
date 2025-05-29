@@ -29,12 +29,18 @@
     </form>
 </section>
 <section>
-    <h3>Resultado</h3>
+ <h3>Resultado</h3>
 
-    {% if resultado %}
-        <div style="margin-top: 20px;">
-            {{ resultado | safe }}
-        </div>
+{% if resultado %}
+    <div style="margin-top: 20px;">
+        {{ resultado | safe }}
+    </div>
+
+    {% if resultado == "Matrícula não encontrada." %}
+        <form action="{{ url_for('cadastrar_aluno') }}" method="get" style="margin-top: 10px;">
+            <button type="submit">Cadastrar carteirinha</button>
+        </form>
     {% endif %}
+{% endif %}
 </section>
 </body>

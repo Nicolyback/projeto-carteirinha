@@ -6,14 +6,21 @@ class Aluno(Base):
     __tablename__ = 'alunos'
 
     matricula = Column("matricula", Integer, primary_key=True)
-    email = Column("email", String, nullable=False)
     nome = Column("nome", String, nullable=False)
+    email = Column("email", String, nullable=False)
+    cpf = Column("cpf", String, unique=True, nullable=False)
+    curso = Column("curso", String, nullable=False)
+    responsavel = Column("responsavel", String)
+    data_cadastro = Column("data_cadastro", DateTime, default=datetime.utcnow)
 
-    def __init__(self, matricula, email, nome):
-        super().__init__()
+    def __init__(self, matricula, nome, email, cpf, curso, responsavel=None):
         self.matricula = matricula
-        self.email = email
         self.nome = nome
+        self.email = email
+        self.cpf = cpf
+        self.curso = curso
+        self.responsavel = responsavel
+
 
 class Carteirinha(Base):
     __tablename__ = 'carteirinhas'
@@ -28,7 +35,6 @@ class Carteirinha(Base):
     criado_em = Column("criado_em", DateTime, default=datetime.utcnow)
 
     def __init__(self, aluno_matricula, email, validade, status='Ativo', caminho_foto=None, pdf_gerado=None):
-        super().__init__()
         self.aluno_matricula = aluno_matricula
         self.email = email
         self.validade = validade

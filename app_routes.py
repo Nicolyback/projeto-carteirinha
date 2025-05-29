@@ -11,11 +11,11 @@ def verificar_carteirinha(matricula, email):
             if carteirinha:
                 return carteirinha.pdf_gerado  
             else:
-                return None  # Aluno válido, mas não tem carteirinha
+                return "Aluno válido, mas não tem carteirinha."  
         else:
-            return None  # Email não confere
+            return "Email não confere." 
     else:
-        return None  # Matrícula não encontrada
+        return "Matrícula não encontrada." 
 
 # Rota para criar aluno fixo (apenas para teste)
 @app.route("/criar_aluno")
