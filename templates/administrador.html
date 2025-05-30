@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Administrador</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style3.css') }}">
+
 </head>
 <body>
 
@@ -26,17 +28,17 @@
 
           <p>
             Digite a matrícula para buscar aluno:<br>
-            <input type="text" name="matricula">
+            <input type="text" name="matricula" placeholder="Digite a matrícula">
           </p>
 
           <p>
             Nome:<br>
-            <input type="text" name="nome" readonly>
+            <input type="text" name="nome" readonly placeholder="Nome do aluno">
           </p>
 
           <p>
             Curso:<br>
-            <input type="text" name="curso" readonly>
+            <input type="text" name="curso" readonly placeholder="Curso do aluno">
           </p>
 
           <p>
@@ -51,8 +53,8 @@
           </p>
 
           <p>
-            <button>Salvar</button>
-            <button>Cancelar</button>
+            <button type="submit">Salvar</button>
+            <button type="reset">Cancelar</button>
           </p>
 
         </form>
@@ -69,5 +71,6 @@
   </table>
 
 </body>
-</html> 
+</html>
+
   

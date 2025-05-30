@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
+
+* {
+    box-sizing: border-box;
+  }
+
+body {
+      background: linear-gradient(135deg, #d3e5dd , #228B22);
+      font-family: "Cabin", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+table {
+  background-color: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  width: 40%;
+}
+
+ h1 {
+  margin-top: 0;
+  font-size: 2em;
+}
+  
+input[type="text"] {
+  width: 95%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Botões superiores */
+td:nth-child(1) button:nth-child(1),
+td:nth-child(1) button:nth-child(2),
+td:nth-child(1) button:nth-child(3) {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+td:nth-child(1) button:nth-child(1):hover,
+td:nth-child(1) button:nth-child(2):hover,
+td:nth-child(1) button:nth-child(3):hover {
+  background-color: #4caf50;
+}
+
+
+/* Estilo da tabela da foto */
+td table {
+  border: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+   

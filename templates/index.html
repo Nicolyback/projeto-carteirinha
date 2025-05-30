@@ -2,45 +2,53 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/style.css">
     <title>Tela Inicial</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<h1>Seja Bem-Vindo!</h1>
-<!--IMAGEM DA ALUNA-->
-<section>
-        <img src="" alt="Aluna do IFAM segurando a carteirinha" width="300">
-    </section>
-<!--QUEM SOMOS?-->
-<section>
-<h2>Quem somos?</h2>
+<div class="container">
+    <!-- Lado esquerdo: imagem de fundo -->
+    <div class="left"></div>
 
-<p>Somos um projeto do IFAM criado para facilitar o acesso à carteirinha estudantil digital.</p>
-<p>Com uma plataforma online, segura e prática, oferecemos aos alunos a possibilidade de consultar, cadastrar e baixar sua identificação em poucos cliques.</p>
-</section>
-<!--Condicional-->
-<section>
-    <form  method="POST" action="/">
-    <label for="matricula">Matrícula:</label>
-    <input type="text" id="matricula" name="matricula" placeholder="Digite a sua matrícula" required><br><br>
-     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="Digite o seu email institucional" required><br><br>
-    <button type="submit">Verificar</button>
-    </form>
-</section>
-<section>
- <h3>Resultado</h3>
+    <!-- Lado direito: conteúdo -->
+    <div class="right">
+        <h1>SEJA BEM-VINDO!</h1>
 
-{% if resultado %}
-    <div style="margin-top: 20px;">
-        {{ resultado | safe }}
+        <!-- Quem somos -->
+        <div class="text-box">
+            <p>Somos um projeto do IFAM criado para facilitar o acesso à carteirinha estudantil digital.</p>
+        </div>
+        <div class="text-box">
+            <p>Com uma plataforma online, segura e prática, oferecemos aos alunos a possibilidade de consultar, cadastrar e baixar sua identificação em poucos cliques.</p>
+        </div>
+
+        <!-- Formulário -->
+        <div class="text-box">
+            <form method="POST" action="/">
+                <label for="matricula">Matrícula:</label>
+                <input type="text" id="matricula" name="matricula" placeholder="Digite a sua matrícula" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="e-mail" placeholder="Digite o seu email institucional" required>
+
+                <button type="submit">Verificar</button>
+            </form>
+        </div>
+
+        <!-- Resultado dinâmico do Flask -->
+        {% if resultado %}
+            <div class="text-box" style="color: black;">
+                <h3>Resultado:</h3>
+                {{ resultado | safe }}
+
+                {% if resultado == "Matrícula não encontrada." %}
+                    <form action="{{ url_for('cadastrar_aluno') }}" method="get">
+                        <button type="submit">Cadastrar carteirinha</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
-
-    {% if resultado == "Matrícula não encontrada." %}
-        <form action="{{ url_for('cadastrar_aluno') }}" method="get" style="margin-top: 10px;">
-            <button type="submit">Cadastrar carteirinha</button>
-        </form>
-    {% endif %}
-{% endif %}
-</section>
+</div>
 </body>
+</html>

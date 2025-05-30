@@ -65,3 +65,10 @@ def enviar():
 
     flash("Aluno e carteirinha cadastrados com sucesso!", "sucesso")
     return redirect(url_for("cadastrar_aluno"))
+
+
+ADMIN_PASSWORD = "minha_senha_super_secreta"
+
+@app.route('/admin')
+def admin():
+    return render_template('administrador.html')
