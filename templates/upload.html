@@ -3,16 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Upload de Foto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
 </head>
 <body>
-    <h1>Upload da Foto</h1>
+    <div class="container">
+        <div class="box">
+            <h1>Upload da Foto</h1>
 
-    <form action="/enviar_foto" method="post" enctype="multipart/form-data">
-        <label for="foto">Selecione a foto (3x4, JPG/PNG):</label><br>
-        <input type="file" id="foto" name="foto" accept=".jpg, .jpeg, .png" required><br><br>
-        <small>A foto deve ter o tamanho de 3x4 (300x400 pixels) e estar no formato JPG ou PNG.</small><br><br>
-        <button type="submit">Enviar Foto</button>
-    </form>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="foto">Selecione a foto (3x4, JPG/PNG):</label><br>
+                <input type="file" id="foto" name="foto" accept=".jpg, .jpeg, .png" required><br><br>
+                <small>A foto deve ter o tamanho de 3x4 (300x400 pixels) e estar no formato JPG ou PNG.</small><br><br>
+
+                <button type="submit" class="btn-enviar">Enviar Foto</button><br>
+            </form>
+
+            {% if foto_enviada %}
+            <form action="/" method="get">
+                <button type="submit" class="btn-avancar">Visualizar Carteirinha</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
-

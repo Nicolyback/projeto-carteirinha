@@ -3,11 +3,16 @@ from main import app
 from models import Aluno, Carteirinha
 from database import session
 from datetime import datetime
+from PIL import Image
+import os
+# Importa as funções auxiliares de app_routes.py
+from app_routes import verificar_carteirinha, validar_tamanho_foto
+
+
 
 @app.route("/", methods=["GET", "POST"])
 def homeindex():
-    from app_routes import verificar_carteirinha
-
+   
     if request.method == "POST":
         matricula = int(request.form["matricula"])
         email = request.form["email"]
@@ -64,8 +69,35 @@ def enviar():
     session.commit()
 
     flash("Aluno e carteirinha cadastrados com sucesso!", "sucesso")
-    return redirect(url_for("cadastrar_aluno"))
+    return redirect(url_for("upload"))
 
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    
+    if request.method == "POST":
+        imagem_arquivo = request.files["foto"]
+
+        try:
+            imagem = Image.open(imagem_arquivo)
+
+            valido, mensagem = validar_tamanho_foto(imagem)
+            if not valido:
+                flash(mensagem, "erro")
+                return redirect(url_for("upload"))
+
+            # Você pode salvar a imagem aqui, se quiser
+            # caminho = os.path.join("static/fotos", imagem_arquivo.filename)
+            # imagem.save(caminho)
+
+            flash("Foto enviada com sucesso!", "sucesso")
+            # Exibe a mesma página, porém com o botão de visualizar aparecendo
+            return render_template("upload.html", foto_enviada=True)
+
+        except Exception as e:
+            flash("Erro ao processar a imagem: " + str(e), "erro")
+            return redirect(url_for("upload"))
+
+    return render_template("upload.html", foto_enviada=False)
 
 ADMIN_PASSWORD = "minha_senha_super_secreta"
 
