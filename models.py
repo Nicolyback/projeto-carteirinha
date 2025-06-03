@@ -10,6 +10,7 @@ class Aluno(Base):
     nome = Column("nome", String, nullable=False)
     email = Column("email", String, nullable=False)
     cpf = Column("cpf", String, unique=True, nullable=False)
+    rg = Column("rg", String, unique=True, nullable=False)
     curso = Column("curso", String, nullable=False)
     responsavel = Column("responsavel", String)
     data_cadastro = Column("data_cadastro", DateTime, default=datetime.utcnow)
@@ -17,11 +18,12 @@ class Aluno(Base):
     # Relacionamento 1 para 1 com Carteirinha
     carteirinha = relationship("Carteirinha", back_populates="aluno", uselist=False)
 
-    def __init__(self, matricula, nome, email, cpf, curso, responsavel=None):
+    def __init__(self, matricula, nome, email, cpf, rg,  curso, responsavel=None):
         self.matricula = matricula
         self.nome = nome
         self.email = email
         self.cpf = cpf
+        self.rg= rg
         self.curso = curso
         self.responsavel = responsavel
 

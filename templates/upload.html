@@ -10,19 +10,35 @@
         <div class="box">
             <h1>Upload da Foto</h1>
 
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <label for="foto">Selecione a foto (3x4, JPG/PNG):</label><br>
+            <form action="{{ url_for('upload', matricula=matricula) }}" method="post" enctype="multipart/form-data">
+                <label for="foto">Selecione a foto (155x144 px, JPG/PNG):</label><br>
                 <input type="file" id="foto" name="foto" accept=".jpg, .jpeg, .png" required><br><br>
-                <small>A foto deve ter o tamanho de 3x4 (300x400 pixels) e estar no formato JPG ou PNG.</small><br><br>
+                <small>A foto deve ter exatamente 155x144 pixels e estar no formato JPG ou PNG.</small><br><br>
 
                 <button type="submit" class="btn-enviar">Enviar Foto</button><br>
             </form>
 
-            {% if foto_enviada %}
-            <form action="/" method="get">
-                <button type="submit" class="btn-avancar">Visualizar Carteirinha</button>
-            </form>
-            {% endif %}
+            <!-- Mensagens flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="flashes">
+                  {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message|safe }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+
+            <!-- Mostrar foto enviada e botão para avançar -->
+{% if foto_enviada %}
+  <h3>Foto enviada:</h3>
+  {% if foto_url %}
+    <img src="{{ foto_url }}" alt="Foto enviada" style="max-width: 200px;">
+  {% endif %}
+  <form action="{{ url_for('gerar_carteirinha', matricula=matricula) }}" method="get">
+      <button type="submit" class="btn-avancar">Visualizar Carteirinha</button>
+  </form>
+{% endif %}
         </div>
     </div>
 </body>

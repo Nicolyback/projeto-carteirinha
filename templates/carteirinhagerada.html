@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Carteirinha Gerada</title>
+</head>
+<body>
+    <h1>Carteirinha Gerada com Sucesso!</h1>
+
+    <h2>Frente</h2>
+    <img src="{{ imagem_frente }}" alt="Frente da Carteirinha" style="width:400px;">
+
+    <h2>Verso</h2>
+    <img src="{{ imagem_verso }}" alt="Verso da Carteirinha" style="width:400px;">
+
+    <br><br>
+    <a href="{{ url_for('listar') }}">Voltar à lista</a>
+</body>
+</html>
