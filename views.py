@@ -7,6 +7,8 @@ from PIL import Image
 import os
 # Importa as funções auxiliares de app_routes.py
 from app_routes import verificar_carteirinha, validar_tamanho_foto
+from sqlalchemy import String
+
 
 
 
@@ -98,6 +100,25 @@ def upload():
             return redirect(url_for("upload"))
 
     return render_template("upload.html", foto_enviada=False)
+
+@app.route("/listar", methods=["GET", "POST"])
+def listar():
+    termo_busca = request.args.get("busca", "").strip()  # pega o termo da query string
+    
+    query = session.query(Aluno).join(Carteirinha)
+
+    if termo_busca:
+        # Filtrar alunos pelo nome, matrícula ou curso contendo o termo (case-insensitive)
+        filtro = f"%{termo_busca}%"
+        query = query.filter(
+            (Aluno.nome.ilike(filtro)) |
+            (Aluno.curso.ilike(filtro)) |
+            (Aluno.matricula.cast(String).ilike(filtro))
+        )
+    
+    alunos = query.all()
+    return render_template("listas.html", alunos=alunos, termo_busca=termo_busca)
+
 
 ADMIN_PASSWORD = "minha_senha_super_secreta"
 

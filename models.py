@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer, Date, ForeignKey, Text, DateTime
 from datetime import datetime
 from database import Base  # Usa o Base criado em database.py
+from sqlalchemy.orm import relationship
 
 class Aluno(Base):
     __tablename__ = 'alunos'
@@ -12,6 +13,9 @@ class Aluno(Base):
     curso = Column("curso", String, nullable=False)
     responsavel = Column("responsavel", String)
     data_cadastro = Column("data_cadastro", DateTime, default=datetime.utcnow)
+
+    # Relacionamento 1 para 1 com Carteirinha
+    carteirinha = relationship("Carteirinha", back_populates="aluno", uselist=False)
 
     def __init__(self, matricula, nome, email, cpf, curso, responsavel=None):
         self.matricula = matricula
@@ -33,6 +37,9 @@ class Carteirinha(Base):
     caminho_foto = Column("caminho_foto", Text)
     pdf_gerado = Column("pdf_gerado", Text)
     criado_em = Column("criado_em", DateTime, default=datetime.utcnow)
+
+    # Relacionamento 1 para 1 com Carteirinha
+    aluno = relationship("Aluno", back_populates="carteirinha")
 
     def __init__(self, aluno_matricula, email, validade, status='Ativo', caminho_foto=None, pdf_gerado=None):
         self.aluno_matricula = aluno_matricula

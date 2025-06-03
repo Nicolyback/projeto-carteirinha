@@ -1,0 +1,244 @@
+/* Estilo básico da tabela */
+
+h1 {
+  text-align: center; /* centraliza o texto */
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif; /* fonte arredondada */
+  font-weight: 700; /* deixa a fonte mais grossa */
+  margin-bottom: 20px; /* espaço embaixo para ficar mais clean */
+  color: #333; /* uma cor escura, mas suave */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif; /* fonte arredondada */
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #f0f0f0;
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Status Ativo - fundo verde claro transparente, texto verde forte */
+.status-ativo {
+  background-color: rgba(0, 128, 0, 0.15);
+  color: #006400;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  display: inline-block;
+  min-width: 70px;
+  text-align: center;
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+}
+
+/* Status Inativo - fundo vermelho claro transparente, texto vermelho forte */
+.status-inativo {
+  background-color: rgba(255, 0, 0, 0.15);
+  color: #B22222;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  display: inline-block;
+  min-width: 70px;
+  text-align: center;
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+}
+
+/* Mensagem quando não há alunos */
+.no-alunos {
+  margin-top: 30px;
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo do filtro de pesquisa */
+.filtro-pesquisa {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+}
+
+.filtro-pesquisa label {
+  font-weight: 600;
+  margin-right: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Container para input + botão com lupa */
+.search-container {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 500px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s;
+}
+
+
+.filtro-pesquisa input[type="text"],
+.search-container input[type="text"] {
+  padding: 8px 12px;
+  border: none;
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+  font-size: 1rem;
+  flex-grow: 1;
+  outline: none;
+  width: 100%;
+}
+.search-container button.search-btn,
+.filtro-pesquisa button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 0 8px 8px 0;
+  background-color: #ffffff; /* Botão branco */
+  color: #333;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+.search-container button.search-btn:hover,
+.filtro-pesquisa button:hover {
+  background-color:  #c8e6c9;      /* Leve mudança de cor */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Sombra um pouco mais forte no hover */
+  border-color: #999;             /* Borda mais escura no hover */
+}
+
+.search-container button.search-btn img {
+  width: 20px;
+  height: 20px;
+  filter: invert(30%) sepia(50%) saturate(500%) hue-rotate(80deg);
+}
+
+
+/* ==== ABA LATERAL (SIDEBAR) ==== */
+
+/* Esconde o checkbox */
+#toggle-sidebar {
+  display: none;
+}
+
+/* Botão abrir menu (fora da sidebar) */
+label.open-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #4caf50;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1100;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+label.open-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Botão fechar dentro da sidebar (hambúrguer) */
+label.close-btn {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo dos 3 risquinhos (hambúrguer) */
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+/* Sidebar do lado esquerdo */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100vh;
+  background-color: #f0f0f0;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.15);
+  transition: left 0.3s ease;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mostrar sidebar quando checkbox marcado */
+#toggle-sidebar:checked ~ .sidebar {
+  left: 0;
+}
+
+/* Mostrar botão abrir só quando sidebar fechada */
+#toggle-sidebar:checked + label.open-btn {
+  display: none;
+}
+
+/* Mostrar botão fechar só quando sidebar aberta */
+#toggle-sidebar:checked ~ .sidebar label.close-btn {
+  display: flex;
+}
+
+/* Esconder botão fechar quando sidebar fechada */
+#toggle-sidebar:not(:checked) ~ .sidebar label.close-btn {
+  display: none;
+}
+
+/* Botões da sidebar */
+.sidebar button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.sidebar button:hover {
+  background-color: #388e3c;
+}
