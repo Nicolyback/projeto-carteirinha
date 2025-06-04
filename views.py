@@ -76,15 +76,14 @@ def enviar():
     return redirect(url_for("upload", matricula=matricula))
 
 
-@app.route('/upload/<matricula>', methods=['GET', 'POST'])
 
-
+@app.route("/upload/<int:matricula>", methods=["GET", "POST"])
 def upload(matricula):
     if request.method == "POST":
         if "foto" not in request.files:
             flash("Nenhuma foto enviada.", "erro")
             return redirect(url_for("upload", matricula=matricula))
-        
+
         imagem_arquivo = request.files["foto"]
 
         if imagem_arquivo.filename == "":
@@ -99,23 +98,21 @@ def upload(matricula):
                 flash(mensagem, "erro")
                 return redirect(url_for("upload", matricula=matricula))
 
-            # Salva a imagem na pasta estática, usando a matrícula como nome
-            caminho = os.path.join("static", "imagensdosalunos", f"{matricula}.png")
+            pasta_fotos = os.path.join("static", "imagensdosalunos")
+            os.makedirs(pasta_fotos, exist_ok=True)
+
+            caminho = os.path.join(pasta_fotos, f"{matricula}.png")
             imagem.save(caminho)
 
-            foto_url = url_for('static', filename=f'imagensdosalunos/{matricula}.png')
+            # Depois de salvar a foto, redireciona para gerar a carteirinha
             flash("Foto enviada com sucesso!", "sucesso")
-
-            # Renderiza a página com a foto e o botão "Visualizar Carteirinha"
-            return render_template("upload.html", foto_enviada=True, foto_url=foto_url, matricula=matricula)
+            return redirect(url_for("gerar_carteirinha", matricula=matricula))
 
         except Exception as e:
             flash(f"Erro ao processar a imagem: {str(e)}", "erro")
             return redirect(url_for("upload", matricula=matricula))
 
-    # Caso seja GET, só renderiza o formulário sem foto
     return render_template("upload.html", foto_enviada=False, matricula=matricula)
-
 
 @app.route("/listar", methods=["GET", "POST"])
 def listar():
@@ -138,26 +135,45 @@ def listar():
 
 @app.route("/gerar_carteirinha/<int:matricula>")
 def gerar_carteirinha(matricula):
-    aluno = session.query(Aluno).filter_by(matricula=matricula).first()
-    carteirinha = session.query(Carteirinha).filter_by(aluno_matricula=matricula).first()
-
-    if not aluno or not carteirinha:
-        flash("Aluno ou carteirinha não encontrados.", "erro")
-        return redirect(url_for("listar"))
-
-    caminho_modelo = os.path.join("static", "images", "modelo_carteirinha.png")  # frente do modelo
-    caminho_verso = os.path.join("static", "images", "verso_padrao.png")         # verso padrão
-    caminho_foto = os.path.join("static", "imagensdosalunos", f"{aluno.matricula}.png")  # foto do aluno
-    caminho_saida_frente = os.path.join("static", "images", "carteirinhas", f"frente_{aluno.matricula}.png")
-
     try:
+        # Busca aluno e carteirinha no banco
+        aluno = session.query(Aluno).filter_by(matricula=matricula).first()
+        print(f"Aluno encontrado? {aluno is not None}")
+
+        carteirinha = session.query(Carteirinha).filter_by(aluno_matricula=matricula).first()
+        print(f"Carteirinha encontrada? {carteirinha is not None}")
+
+        if not aluno:
+            flash("Aluno não encontrado.", "erro")
+            return render_template("upload.html", matricula=matricula)
+
+        if not carteirinha:
+            flash("Carteirinha não encontrada.", "erro")
+            return render_template("upload.html", matricula=matricula)
+
+        # Caminhos para imagens
+        caminho_modelo = os.path.join("static", "images", "identidadeestudantilfrente.png")
+        caminho_foto = os.path.join("static", "imagensdosalunos", f"{aluno.matricula}.png")
+        caminho_saida = caminho_foto 
+
+
+        # Verifica se a foto existe
+        if not os.path.exists(caminho_foto):
+            flash("Foto da carteirinha não encontrada.", "erro")
+            return render_template("upload.html", matricula=matricula)
+
+        # Abre imagem modelo e foto do aluno
         imagem_base = Image.open(caminho_modelo).convert("RGBA")
-        foto = Image.open(caminho_foto).resize((150, 180))
-        imagem_base.paste(foto, (50, 50))  # ajuste a posição se necessário
+        foto_aluno = Image.open(caminho_foto).resize((150, 180))  # Ajuste tamanho da foto se quiser
 
+        # Cola a foto na imagem base
+        imagem_base.paste(foto_aluno, (50, 50))
+
+        # Criar objeto para desenhar texto
         draw = ImageDraw.Draw(imagem_base)
-        fonte = ImageFont.truetype("arial.ttf", 20)  # você pode mudar a fonte se quiser
+        fonte = ImageFont.truetype("arial.ttf", 20)
 
+        # Escreve informações do aluno na carteirinha
         draw.text((250, 50), f"Nome: {aluno.nome}", fill="black", font=fonte)
         draw.text((250, 80), f"Matrícula: {aluno.matricula}", fill="black", font=fonte)
         draw.text((250, 110), f"Curso: {aluno.curso}", fill="black", font=fonte)
@@ -165,19 +181,25 @@ def gerar_carteirinha(matricula):
         draw.text((250, 170), f"RG: {aluno.rg}", fill="black", font=fonte)
         draw.text((250, 200), f"Validade: {carteirinha.validade.strftime('%m/%Y')}", fill="black", font=fonte)
 
-        imagem_base.save(caminho_saida_frente)
+        # Salva a imagem final da carteirinha
+        os.makedirs(os.path.dirname(caminho_saida), exist_ok=True)
+        imagem_base.save(caminho_saida)
 
-        carteirinha.pdf_gerado = caminho_saida_frente
+        # Atualiza o caminho da foto e pdf (imagem) no banco
+        carteirinha.caminho_foto = caminho_foto
+        carteirinha.pdf_gerado = caminho_saida
         session.commit()
 
-        url_frente = url_for("static", filename=f"images/carteirinhas/frente_{aluno.matricula}.png")
-        url_verso = url_for("static", filename="images/verso_padrao.png")
+        # Gera URLs para passar ao template (usando url_for para static)
+        url_carteirinha = url_for("static", filename=f"imagensdosalunos/{aluno.matricula}.png")
 
-        return render_template("carteirinha_gerada.html", imagem_frente=url_frente, imagem_verso=url_verso)
+        # Renderiza template mostrando a carteirinha gerada
+        return render_template("carteirinhagerada.html", imagem_carteirinha=url_carteirinha)
 
     except Exception as e:
         flash(f"Erro ao gerar carteirinha: {e}", "erro")
-        return redirect(url_for("listar"))
+        return render_template("upload.html", matricula=matricula)
+
 
 
 ADMIN_PASSWORD = "minha_senha_super_secreta"

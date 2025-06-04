@@ -13,7 +13,7 @@
             <form action="{{ url_for('upload', matricula=matricula) }}" method="post" enctype="multipart/form-data">
                 <label for="foto">Selecione a foto (155x144 px, JPG/PNG):</label><br>
                 <input type="file" id="foto" name="foto" accept=".jpg, .jpeg, .png" required><br><br>
-                <small>A foto deve ter exatamente 155x144 pixels e estar no formato JPG ou PNG.</small><br><br>
+                <small>A foto deve ter exatamente 115x144 pixels e estar no formato JPG ou PNG.</small><br><br>
 
                 <button type="submit" class="btn-enviar">Enviar Foto</button><br>
             </form>
@@ -28,17 +28,17 @@
                 </ul>
               {% endif %}
             {% endwith %}
-
+             <p>Matrícula atual: {{ matricula }}</p>
             <!-- Mostrar foto enviada e botão para avançar -->
-{% if foto_enviada %}
-  <h3>Foto enviada:</h3>
-  {% if foto_url %}
-    <img src="{{ foto_url }}" alt="Foto enviada" style="max-width: 200px;">
-  {% endif %}
-  <form action="{{ url_for('gerar_carteirinha', matricula=matricula) }}" method="get">
-      <button type="submit" class="btn-avancar">Visualizar Carteirinha</button>
-  </form>
-{% endif %}
+            {% if foto_enviada %}
+              <h3>Foto enviada:</h3>
+              {% if foto_url %}
+                <img src="{{ foto_url }}" alt="Foto enviada" style="max-width: 200px;">
+              {% endif %}
+              <form action="{{ url_for('gerar_carteirinha', matricula=matricula) }}" method="get">
+                  <button type="submit" class="btn-avancar">Visualizar Carteirinha</button>
+              </form>
+            {% endif %}
         </div>
     </div>
 </body>
