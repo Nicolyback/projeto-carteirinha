@@ -14,11 +14,13 @@ class Aluno(Base):
     curso = Column("curso", String, nullable=False)
     responsavel = Column("responsavel", String)
     data_cadastro = Column("data_cadastro", DateTime, default=datetime.utcnow)
+    data_nasc = Column("data_nasc", Date, nullable=True)
+    validade = Column("validade", Date, nullable=True)
 
     # Relacionamento 1 para 1 com Carteirinha
     carteirinha = relationship("Carteirinha", back_populates="aluno", uselist=False)
 
-    def __init__(self, matricula, nome, email, cpf, rg,  curso, responsavel=None):
+    def __init__(self, matricula, nome, email, cpf, rg,  curso, responsavel=None, data_nasc=None,validade=None):
         self.matricula = matricula
         self.nome = nome
         self.email = email
@@ -26,7 +28,8 @@ class Aluno(Base):
         self.rg= rg
         self.curso = curso
         self.responsavel = responsavel
-
+        self.data_nasc = data_nasc
+        self.validade = validade
 
 class Carteirinha(Base):
     __tablename__ = 'carteirinhas'
@@ -50,3 +53,14 @@ class Carteirinha(Base):
         self.status = status
         self.caminho_foto = caminho_foto
         self.pdf_gerado = pdf_gerado
+
+class Admin(Base):
+    __tablename__ = 'admin'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    matricula = Column(String, nullable=False, unique=True)
+    email = Column(String, nullable=False)
+
+    def __init__(self, matricula, email):
+        self.matricula = matricula
+        self.email = email

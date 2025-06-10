@@ -29,6 +29,15 @@
 
   {% if alunos %}
   <table>
+
+    <form id="formEditar" action="{{ url_for('editar_aluno') }}" method="POST">
+    <input type="hidden" name="matricula" id="inputMatriculaSelecionada">
+    </form>
+
+    <form id="formExcluir" action="{{ url_for('excluir_aluno') }}" method="POST">
+    <input type="hidden" name="matricula" id="inputMatriculaExcluir">
+    </form>
+
     <thead>
       <tr>
         <th>Nome</th>
@@ -79,9 +88,85 @@
   </label>
 
   <!-- Conteúdo da sidebar -->
-  <button>Editar</button>
-  <button>Excluir</button>
+  <button id="btnEditarSidebar" disabled>Editar</button>
+  <button id="btnExcluirSidebar" disabled>Excluir</button>
 </div>
+
+<script>
+  let matriculaSelecionada = null;
+
+  document.querySelectorAll("tbody tr").forEach(row => {
+    row.addEventListener("click", function () {
+      const matricula = this.cells[1].textContent.trim(); // Pega matrícula da 2ª célula (ajuste se necessário)
+      matriculaSelecionada = matricula;
+
+      document.getElementById("inputMatriculaSelecionada").value = matricula;
+
+      document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("selecionado"));
+      this.classList.add("selecionado");
+
+      // Habilita o botão de editar da sidebar
+      const btnEditarSidebar = document.getElementById("btnEditarSidebar");
+      if (btnEditarSidebar) {
+        btnEditarSidebar.disabled = false;
+      }
+    });
+  });
+
+  // Intercepta o clique no botão de editar da sidebar para submeter o formulário
+  const btnEditarSidebar = document.getElementById("btnEditarSidebar");
+  if (btnEditarSidebar) {
+    btnEditarSidebar.addEventListener("click", function (e) {
+      if (matriculaSelecionada) {
+        document.getElementById("formEditar").submit();
+      } else {
+        alert("Selecione um aluno na tabela primeiro.");
+        e.preventDefault();
+      }
+    });
+  }
+</script>
+
+<script>
+
+document.querySelectorAll("tbody tr").forEach(row => {
+  row.addEventListener("click", function () {
+    const matricula = this.cells[1].textContent.trim();
+    matriculaSelecionada = matricula;
+
+    document.getElementById("inputMatriculaSelecionada").value = matricula;
+    document.getElementById("inputMatriculaExcluir").value = matricula;
+
+    document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("selecionado"));
+    this.classList.add("selecionado");
+
+    document.getElementById("btnEditarSidebar").disabled = false;
+    document.getElementById("btnExcluirSidebar").disabled = false;
+  });
+});
+
+// Submete o formulário de edição
+document.getElementById("btnEditarSidebar").addEventListener("click", function (e) {
+  if (matriculaSelecionada) {
+    document.getElementById("formEditar").submit();
+  } else {
+    alert("Selecione um aluno na tabela primeiro.");
+    e.preventDefault();
+  }
+});
+
+// Submete o formulário de exclusão
+document.getElementById("btnExcluirSidebar").addEventListener("click", function (e) {
+  if (matriculaSelecionada) {
+    if (confirm("Tem certeza que deseja excluir este aluno?")) {
+      document.getElementById("formExcluir").submit();
+    }
+  } else {
+    alert("Selecione um aluno na tabela primeiro.");
+    e.preventDefault();
+  }
+});
+</script>
 
 </body>
 </html>

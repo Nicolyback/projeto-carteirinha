@@ -17,44 +17,50 @@
 
     <tr>
       <td colspan="2" align="center">
-        <button>Editar</button>
-        <button>Listar</button> 
-        <button>Excluir</button>
+        <button disabled>Editar</button>
+        <a href="{{ url_for('listar') }}">
+        <button>Listar</button>
+        </a>
+        <button disabled>Excluir</button>
       </td>
     </tr> 
     <tr>
       <td>
-        <form>
+        <form method="POST" action="{{ url_for('salvar_aluno') }}">
 
           <p>
             Digite a matrícula para buscar aluno:<br>
-            <input type="text" name="matricula" placeholder="Digite a matrícula">
+            <input type="text" name="matricula" value="{{ aluno.matricula if aluno else '' }}">
           </p>
 
           <p>
             Nome:<br>
-            <input type="text" name="nome" readonly placeholder="Nome do aluno">
+            <input type="text" name="nome" value="{{ aluno.nome if aluno else '' }}">
           </p>
 
           <p>
             Curso:<br>
-            <input type="text" name="curso" readonly placeholder="Curso do aluno">
+            <input type="text" name="curso" value="{{ aluno.curso if aluno else '' }}">
           </p>
 
           <p>
-            Data Nasc.: <input type="text" name="data_nasc" placeholder="DD/MM/AAAA">
-            &nbsp;&nbsp;
-            Validade: <input type="text" name="validade" placeholder="MM/AAAA">
+             Data Nasc.: <br>
+             <input type="text" name="data_nasc"
+             value="{{ aluno.data_nasc.strftime('%d/%m/%Y') if aluno and aluno.data_nasc else '' }}">
+             &nbsp;&nbsp;
+             Validade: <br>
+             <input type="text" name="validade"
+             value="{{ aluno.validade.strftime('%d/%m/%Y') if aluno and aluno.validade else '' }}">
           </p>
 
           <p>
             CPF:<br>
-            <input type="text" name="cpf" placeholder="xxx.xxx.xxx-xx">
+            <input type="text" name="cpf" value="{{ aluno.cpf if aluno else '' }}">
           </p>
 
           <p>
-            <button type="submit">Salvar</button>
-            <button type="reset">Cancelar</button>
+            <button id="btnSalvar" type="submit" {% if not aluno %}disabled{% endif %}>Salvar</button>
+            <button id="btnCancelar" type="reset" {% if not aluno %}disabled{% endif %}>Cancelar</button>
           </p>
 
         </form>
@@ -70,7 +76,32 @@
     </tr>  
   </table>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const btnCancelar = document.querySelector('button[type="reset"]');
+    const btnSalvar = document.querySelector('button[type="submit"]');
+    const btnListar = document.querySelector('a button'); // Listar está dentro de um <a>
+    const camposTexto = document.querySelectorAll('input[type="text"]');
+
+    if (btnCancelar) {
+        btnCancelar.addEventListener('click', function (e) {
+            e.preventDefault(); // Evita reset automático do form
+
+            // Limpa os campos de texto
+            camposTexto.forEach(input => {
+                input.value = '';
+            });
+
+            // Desativa os botões Salvar e Cancelar
+            if (btnSalvar) btnSalvar.disabled = true;
+            if (btnCancelar) btnCancelar.disabled = true;
+
+            // Garante que o botão Listar continue ativado
+            if (btnListar) btnListar.disabled = false;
+        });
+    }
+});
+</script>
+
 </body>
 </html>
-
-  

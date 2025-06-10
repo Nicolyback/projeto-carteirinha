@@ -1,22 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Carteirinha Gerada</title>
+    <title>Carteirinha do Aluno</title>
 </head>
 <body>
-    <h1>Carteirinha Gerada com Sucesso!</h1>
-
-    <h2>Frente</h2>
-    <!-- Usando url_for para carregar a imagem da frente -->
-    <img src="{{ url_for('static', filename=imagem_frente) }}" alt="Frente da Carteirinha" style="width:400px;">
-
-    <h2>Verso</h2>
-    <!-- Usando url_for para carregar a imagem do verso -->
-    <img src="{{ url_for('static', filename=imagem_verso) }}" alt="Verso da Carteirinha" style="width:400px;">
-
-    <br><br>
-    <a href="{{ url_for('upload') }}">Voltar à upload</a>
+    <h2>Carteirinha do Aluno: {{ aluno.nome }}</h2>
+    <img src="{{ imagem_carteirinha }}" alt="Carteirinha" style="width:500px; border: 1px solid #333;" />
 </body>
 </html>
-

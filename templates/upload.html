@@ -1,45 +1,99 @@
+<!-- templates/upload.html -->
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Upload de Foto</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+  <meta charset="UTF-8" />
+  <title>Captura de Foto</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
 </head>
 <body>
-    <div class="container">
-        <div class="box">
-            <h1>Upload da Foto</h1>
+  <h1>Tirar Foto com a Câmera</h1>
 
-            <form action="{{ url_for('upload', matricula=matricula) }}" method="post" enctype="multipart/form-data">
-                <label for="foto">Selecione a foto (155x144 px, JPG/PNG):</label><br>
-                <input type="file" id="foto" name="foto" accept=".jpg, .jpeg, .png" required><br><br>
-                <small>A foto deve ter exatamente 115x144 pixels e estar no formato JPG ou PNG.</small><br><br>
+  <!-- Botão customizado para abrir a câmera -->
+  <button id="openCameraBtn" class="camera-btn">Tirar Foto</button>
+  
+  <!-- Input file escondido -->
+  <input type="file" accept="image/*" capture="environment" id="cameraInput" style="display:none;" />
 
-                <button type="submit" class="btn-enviar">Enviar Foto</button><br>
-            </form>
+  <br /><br />
 
-            <!-- Mensagens flash -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                <ul class="flashes">
-                  {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message|safe }}</li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            {% endwith %}
-             <p>Matrícula atual: {{ matricula }}</p>
-            <!-- Mostrar foto enviada e botão para avançar -->
-            {% if foto_enviada %}
-              <h3>Foto enviada:</h3>
-              {% if foto_url %}
-                <img src="{{ foto_url }}" alt="Foto enviada" style="max-width: 200px;">
-              {% endif %}
-              <form action="{{ url_for('gerar_carteirinha', matricula=matricula) }}" method="get">
-                  <button type="submit" class="btn-avancar">Visualizar Carteirinha</button>
-              </form>
-            {% endif %}
-        </div>
-    </div>
+  <img id="preview" src="" alt="Prévia" style="max-width: 300px; display: none;" />
+  <br />
+
+  <div id="confirmButtons" style="display: none;">
+    <button id="okBtn" disabled>OK</button>
+    <button id="refazerBtn">Refazer</button>
+  </div>
+
+  <form id="formVisualizar" action="{{ url_for('confirmar_foto') }}" method="POST" style="display: none;">
+    <input type="hidden" name="image_path" id="imagePathInput" />
+    <button type="submit">Visualizar Carteirinha</button>
+  </form>
+
+  <script>
+    const openCameraBtn = document.getElementById("openCameraBtn");
+    const cameraInput = document.getElementById("cameraInput");
+    const preview = document.getElementById("preview");
+    const confirmButtons = document.getElementById("confirmButtons");
+    const okBtn = document.getElementById("okBtn");
+    const refazerBtn = document.getElementById("refazerBtn");
+    const formVisualizar = document.getElementById("formVisualizar");
+    const imagePathInput = document.getElementById("imagePathInput");
+
+    const matricula = "{{ matricula }}";
+
+    okBtn.disabled = true;
+
+    // Quando clicar no botão, dispara o input file escondido (abre câmera)
+    openCameraBtn.addEventListener("click", () => {
+      cameraInput.click();
+    });
+
+    cameraInput.addEventListener("change", async function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      okBtn.disabled = true;
+      preview.style.display = "none";
+      confirmButtons.style.display = "none";
+      formVisualizar.style.display = "none";
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetch(`/upload/${matricula}`, {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          preview.src = data.preview_url;
+          preview.style.display = "block";
+          confirmButtons.style.display = "block";
+          imagePathInput.value = data.image_path;
+          okBtn.disabled = false;
+        } else {
+          alert("Erro ao enviar imagem: " + (data.error || ""));
+        }
+      } catch (error) {
+        alert("Erro ao enviar imagem: " + error.message);
+      }
+    });
+
+    okBtn.addEventListener("click", () => {
+      formVisualizar.style.display = "block";
+      confirmButtons.style.display = "none";
+    });
+
+    refazerBtn.addEventListener("click", () => {
+      preview.style.display = "none";
+      confirmButtons.style.display = "none";
+      formVisualizar.style.display = "none";
+      cameraInput.value = "";
+      okBtn.disabled = true;
+    });
+  </script>
 </body>
 </html>

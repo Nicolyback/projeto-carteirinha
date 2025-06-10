@@ -242,3 +242,7 @@ label.close-btn {
 .sidebar button:hover {
   background-color: #388e3c;
 }
+
+tr.selecionado {
+  background-color: #d0f0d0 !important;
+}

@@ -66,3 +66,16 @@ td table {
   overflow: hidden;
 }
    
+/* Aparência visual clara de botões desabilitados */
+button:disabled {
+  background-color: #d3d3d3 !important;  /* cinza claro */
+  color: #888 !important;               /* cinza escuro no texto */
+  border: none !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+/* Evita hover verde em botões desativados */
+button:disabled:hover {
+  background-color: #d3d3d3 !important;
+}

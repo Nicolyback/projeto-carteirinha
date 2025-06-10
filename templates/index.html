@@ -36,18 +36,60 @@
         </div>
 
         <!-- Resultado dinâmico do Flask -->
-        {% if resultado %}
-            <div class="text-box" style="color: black;">
-                <h3>Resultado:</h3>
-                {{ resultado | safe }}
+        <!--{% if resultado %}
+            {% if resultado == "admin" %}
+                <div class="text-box" style="color: blue;">
+                    <h3>Resultado:</h3>
+                    🔒 Acesso de administrador detectado!<br>
+                    <a href="{{ url_for('admin') }}">
+                        <button>Acessar Painel de Administração</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="text-box" style="color: black;">
+                    <h3>Resultado:</h3>
+                    {{ resultado | safe }}
 
-                {% if resultado == "Matrícula não encontrada." %}
-                    <form action="{{ url_for('cadastrar_aluno') }}" method="get">
-                        <button type="submit">Cadastrar carteirinha</button>
-                    </form>
-                {% endif %}
-            </div>
+                    {% if resultado == "Matrícula não encontrada." %}
+                        <form action="{{ url_for('cadastrar_aluno') }}" method="get">
+                            <button type="submit">Cadastrar carteirinha</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
         {% endif %}
+    </div>
+</div>
+</body>
+</html>
+     <!-- Resultado dinâmico do Flask -->
+        {% if resultado %}
+    {% if resultado == "admin" %}
+        <div class="text-box" style="color: blue;">
+            <h3>Resultado:</h3>
+            🔒 Acesso de administrador detectado!<br>
+            <a href="{{ url_for('admin') }}">
+                <button>Acessar Painel de Administração</button>
+            </a>
+        </div>
+
+    {% elif resultado == "sucesso" %}
+        <div class="text-box" style="color: green;">
+            <h3>Resultado:</h3>
+            ✅ Sua carteirinha foi encontrada!<br>
+            <a href="#" download>📥 Baixar Carteirinha</a>
+        </div>
+
+    {% elif resultado == "nao_cadastrada" %}
+        <div class="text-box" style="color: red;">
+            <h3>Resultado:</h3>
+            ❌ Carteirinha não cadastrada.<br>
+            <a href="{{ url_for('cadastrar_aluno') }}">
+                <button>Cadastrar Carteirinha</button>
+            </a>
+        </div>
+    {% endif %}
+{% endif %}
     </div>
 </div>
 </body>
